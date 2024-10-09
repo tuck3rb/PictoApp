@@ -10,16 +10,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  // _counter is only here so that the buttons do anything
+  // Once button navigation takes you to the right pages, 
+  // then _counter will no longer be needed
+  int _counter = 0; 
   Color _textColor = Colors.black;
 
+  // _incrementCounter is only here so that the buttons do anything
+  // Once button navigation takes you to the right pages, 
+  // then _incrementCounter will no longer be needed
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
   }
 
-  void _changeTextColor(Color color) {
+  // Allows for display name to change with user's selection
+  // I want to continue this value to the user's profile probably,
+  // so that in the chat they have a username color and can maybe 
+  // type and draw in that color (if not others).
+  void _changeTextColor(Color color) { 
     setState(() {
       _textColor = color;
     });
@@ -48,7 +58,11 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(
               width: 250,
-              child: TextField(
+              child: TextField( 
+                // We should either make it to where you can edit your display name
+                // straight from here OR we could make it to where your display name
+                // is written here and you can click a little pencil icon to edit your
+                // profile settings (similar to profile button in the firebase demo).
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Display name',
@@ -60,7 +74,7 @@ class _HomePageState extends State<HomePage> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: [
+                children: [ // Different colors for user to select. Could totally put more!
                   _colorButton(Colors.black),
                   _colorButton(Colors.red),
                   _colorButton(Colors.orange),
@@ -96,6 +110,10 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: const Color.fromARGB(255, 0, 122, 222),
                   shape: const BeveledRectangleBorder(),
                 ),
+                // I think we'll be able to figure out Private Rooms,
+                // but if not we could have multiple public ones easily.
+                // However if we can make multiple public ones, then private
+                // rooms shouldn't be that much harder!
                 child: const Text('Private Room', style: TextStyle(fontSize: 24, color: Colors.white),),
               ),
             ),
@@ -106,7 +124,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _colorButton(Color color) {
+  // Made a special type of elevated button for selecting display name color
+  Widget _colorButton(Color color) { 
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ElevatedButton(

@@ -26,7 +26,10 @@ class App extends StatelessWidget {
         // visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
-      home: const ChatPage(title: 'PictoApp'),
+      // If you want to view ChatPage before it is connected via navigation, 
+      // then comment out the below line and uncomment the other.
+      home: const HomePage(title: 'PictoApp'), 
+      // home: const ChatPage(title: 'PictoApp'),
     );
   }
 }

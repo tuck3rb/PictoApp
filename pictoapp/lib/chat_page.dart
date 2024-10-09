@@ -23,7 +23,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
       ),
-      body: const Center( // remove this const
+      body: const Center( // remove this const when actually implementing body of this page
         child: Column(
           children: [
             Text('This is the chat page.')
