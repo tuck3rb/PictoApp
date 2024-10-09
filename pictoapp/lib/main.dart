@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'home_page.dart';
+import 'chat_page.dart';
 
 void main() {
     WidgetsFlutterBinding.ensureInitialized(); // Forces portrait mode
@@ -25,7 +26,7 @@ class App extends StatelessWidget {
         // visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'PictoApp'),
+      home: const ChatPage(title: 'PictoApp'),
     );
   }
 }

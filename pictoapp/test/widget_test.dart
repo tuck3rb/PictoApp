@@ -10,8 +10,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pictoapp/main.dart';
 
+// We'll at minimum want tests for navigation, messaging, drawing board, & displaying of drawings
+
+
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  // This is the test that comes with the basic flutter increment app
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async { 
     // Build our app and trigger a frame.
     await tester.pumpWidget(const App());
 
