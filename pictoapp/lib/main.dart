@@ -30,6 +30,10 @@ class App extends StatelessWidget {
       // then comment out the below line and uncomment the other.
       home: const HomePage(title: 'PictoApp'), 
       // home: const ChatPage(title: 'PictoApp'),
+      routes: {
+        '/chatpage':(context) => const ChatPage(title: 'Chat'),
+        '/homepage':(context) => const HomePage(title: 'Home'),
+      }
     );
   }
 }

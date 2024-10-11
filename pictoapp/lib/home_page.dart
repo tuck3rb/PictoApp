@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pictoapp/chat_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -89,7 +90,9 @@ class _HomePageState extends State<HomePage> {
               width: 250,
               height: 100,
               child: OutlinedButton(
-                onPressed: _incrementCounter,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/chatpage');
+                },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.black,
                   side: const BorderSide(color: Color.fromARGB(255, 0, 46, 83)),
@@ -103,7 +106,9 @@ class _HomePageState extends State<HomePage> {
               width: 250,
               height: 100,
               child: OutlinedButton(
-                onPressed: _incrementCounter,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/chatpage');
+                },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.black,
                   side: const BorderSide(color: Color.fromARGB(255, 0, 46, 83)),
