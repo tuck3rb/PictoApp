@@ -1,13 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pictoapp/firebase_options.dart';
 import 'home_page.dart';
 import 'chat_page.dart';
 
-void main() {
+Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized(); // Forces portrait mode
+    await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // Initialize Firebase with the options
+    );
     SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-  ]);
+    ]);
   runApp(const App());
 }
 
