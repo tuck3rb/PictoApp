@@ -1,3 +1,8 @@
+
+// Copyright 2022 The Flutter Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
@@ -9,8 +14,6 @@ import 'firebase_options.dart';
 
 import 'dart:async';
 
-enum Attending { yes, no, unknown }
-
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
@@ -18,13 +21,6 @@ class ApplicationState extends ChangeNotifier {
 
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
-
-  set attending(int attending) {
-    final userDoc = FirebaseFirestore.instance
-        .collection('attendees')
-        .doc(FirebaseAuth.instance.currentUser!.uid);
-    userDoc.set(<String, dynamic>{'attending': attending});
-  }
 
   Future<void> init() async {
     await Firebase.initializeApp(
