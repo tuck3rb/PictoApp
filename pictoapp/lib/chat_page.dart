@@ -4,11 +4,13 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signature_pad/flutter_signature_pad.dart';
+import 'package:pictoapp/currentuser.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key, required this.title});
+  const ChatPage({super.key, required this.title, required this.user});
 
   final String title;
+  final CurrentUser user;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -17,11 +19,22 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final GlobalKey<SignatureState> _signatureKey = GlobalKey();
   final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
     _textController.dispose();
     super.dispose();
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 900),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   @override
@@ -44,62 +57,100 @@ class _ChatPageState extends State<ChatPage> {
                 }
                 final messages = snapshot.data!.docs;
 
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _scrollToBottom();
+                });
+
                 return ListView.builder(
+                  controller: _scrollController,
+                  shrinkWrap: true,
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final message = messages[index];
-                    final content = message['content'];
+                    final name = message['displayname'];
+                    final text = message['text'];
+                    final image = message['image'];
                     final type = message['type'];
 
                     if (type == 'text') {
-                      return ListTile(title: Text(content));
-                    } else if (type == 'drawing' && content != null) {
-                      final imageBytes = base64Decode(content);
-                      return Image.memory(imageBytes);
+                      return ListTile(leading: Text(name), title: Text(text));
+                    } else if (type == 'drawing' && image != null) {
+                      final imageBytes = base64Decode(image);
+                      return ListTile(leading: Text(name), title: Image.memory(imageBytes));
+                    } else if (type == 'mixed' && image != null) {
+                      final imageBytes = base64Decode(image);
+                      return ListTile(
+                        leading: Text(name), 
+                        title: Stack(
+                          children: [
+                            Image.memory(imageBytes),
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Text(text)
+                              )
+                            )
+                          ],
+                        )
+                      );
                     } else {
-                      return const SizedBox.shrink(); // In case of unknown type
+                      return const SizedBox.shrink(); // if messsage is unknown type
                     }
                   },
                 );
               },
             ),
           ),
-          Stack(
-            children: [
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                ),
-                child: Signature(
-                  key: _signatureKey,
-                  color: Colors.black, /// Can be updated to user color from home page.
-                  strokeWidth: 3.0,
-                ),
-              ),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  color: Colors.transparent,
-                  child: TextField(
-                    controller: _textController,
-                    decoration: const InputDecoration(
-                      filled: false,
-                      border: InputBorder.none,
-                    ),
-                    maxLines: null,
-                    minLines: 1,
-                    textAlignVertical: TextAlignVertical.top,
+          SizedBox(
+            height: 200,
+            child: Stack(
+              children: [
+                Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                  ),
+                  child: Signature(
+                    key: _signatureKey,
+                    color: widget.user.color, /// Can be updated to user color from home page.
+                    strokeWidth: 3.0,
                   ),
                 ),
-              ),
-            ],
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.transparent,
+                    child: TextField(
+                      controller: _textController,
+                      decoration: const InputDecoration(
+                        filled: false,
+                        border: InputBorder.none,
+                      ),
+                      maxLines: null,
+                      minLines: 1,
+                      textAlignVertical: TextAlignVertical.top,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: _sendMessage,
+          AppBar(
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.send),
+                onPressed: _sendMessage,
+              ),
+              IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: _signatureKey.currentState?.clear,
+              ),
+            ]
           ),
         ],
       ),
@@ -119,15 +170,19 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     final Map<String, dynamic> messageData = {
+      'displayname': widget.user.displayName,
       'timestamp': FieldValue.serverTimestamp(),
       'type': '',
-      'content': text.isNotEmpty ? text : base64Image,
+      'text': text,
+      'image': base64Image,
     };
 
-    if (text.isNotEmpty) {
+    if (text.isNotEmpty && base64Image == null) {
       messageData['type'] = 'text';
-    } else if (base64Image != null) {
+    } else if (text.isEmpty && base64Image != null) {
       messageData['type'] = 'drawing';
+    } else {
+      messageData['type'] = 'mixed';
     }
 
     _textController.clear();
