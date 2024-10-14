@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1268217098",
+    "project_id": "pictoapp-edcf7",
+    "storage_bucket": "pictoapp-edcf7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1268217098:android:e50d75fa39c9e8610e36f3",
+        "android_client_info": {
+          "package_name": "com.example.pictoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnlsHnCzHaIOQ0nSwkd44r1xDiuM7VdVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
