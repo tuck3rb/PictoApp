@@ -49,13 +49,13 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCOFAyzxuaioJqK-QqJEF6-Rkw_BC7JkGg',
-    appId: '1:1268217098:ios:c5764d6f1013977f0e36f3',
-    messagingSenderId: '1268217098',
-    projectId: 'pictoapp-edcf7',
-    storageBucket: 'pictoapp-edcf7.appspot.com',
-  );
+  // static const FirebaseOptions android = FirebaseOptions(
+  //   apiKey: 'AIzaSyCOFAyzxuaioJqK-QqJEF6-Rkw_BC7JkGg',
+  //   appId: '1:1268217098:ios:c5764d6f1013977f0e36f3',
+  //   messagingSenderId: '1268217098',
+  //   projectId: 'pictoapp-edcf7',
+  //   storageBucket: 'pictoapp-edcf7.appspot.com',
+  // );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCOFAyzxuaioJqK-QqJEF6-Rkw_BC7JkGg',
