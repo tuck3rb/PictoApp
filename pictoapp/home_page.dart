@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pictoapp/app_state.dart';
-import 'package:pictoapp/authentication.dart';
 import 'package:pictoapp/chat_page.dart';
-import 'package:firebase_auth/firebase_auth.dart' // new
-    hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:provider/provider.dart';  
-
-import 'currentuser.dart';
+import 'package:pictoapp/currentuser.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title, required this.user});
@@ -68,13 +61,6 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Consumer<ApplicationState>(
-            builder: (context, appState, _) => AuthFunc(
-                loggedIn: appState.loggedIn,
-                signOut: () {
-                  FirebaseAuth.instance.signOut();
-                }),
-          ),
             const SizedBox(height: 75),
             const Text(
               'Select a chat room:',
@@ -117,7 +103,8 @@ class _HomePageState extends State<HomePage> {
               height: 100,
               child: OutlinedButton(
                 onPressed: () {
-                  context.push('/chatpage');
+                  Navigator.pushNamed(context, '/chatpage');
+                  
                 },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.black,
@@ -133,7 +120,8 @@ class _HomePageState extends State<HomePage> {
               height: 100,
               child: OutlinedButton(
                 onPressed: () {
-                  context.push('/chatpage');
+                  
+                  Navigator.pushNamed(context, '/chatpage');
                 },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.black,

@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "685435500986",
+    "firebase_url": "https://pictoapp-342ec-default-rtdb.firebaseio.com",
+    "project_id": "pictoapp-342ec",
+    "storage_bucket": "pictoapp-342ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685435500986:android:dec9b2c5ccf7a2ec684583",
+        "android_client_info": {
+          "package_name": "com.PictoApp.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-6m-1fLPkd_4k5vf8vI2-7mjLeu9eq04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685435500986:android:236b4054a943bd6a684583",
+        "android_client_info": {
+          "package_name": "com.example.pictoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-6m-1fLPkd_4k5vf8vI2-7mjLeu9eq04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

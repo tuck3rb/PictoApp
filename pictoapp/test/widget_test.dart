@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pictoapp/main.dart';
+import 'package:pictoapp/currentuser.dart';
 
 // We'll at minimum want tests for navigation, messaging, drawing board, & displaying of drawings
 
@@ -17,7 +18,7 @@ void main() {
   // This is the test that comes with the basic flutter increment app
   testWidgets('Counter increments smoke test', (WidgetTester tester) async { 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const App());
+    await tester.pumpWidget(App(user: CurrentUser(displayName: "poop", color: Colors.green)));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
