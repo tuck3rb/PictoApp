@@ -56,8 +56,6 @@ class DefaultFirebaseOptions {
     appId: '1:1268217098:android:e50d75fa39c9e8610e36f3',
     messagingSenderId: '1268217098',
     projectId: 'pictoapp-edcf7',
-    storageBucket: 'pictoapp-edcf7.appspot.com',
-    iosBundleId: 'com.example.pictoapp',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
