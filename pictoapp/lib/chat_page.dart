@@ -150,7 +150,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           AppBar(
-            leading: null,
+            automaticallyImplyLeading: false,
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.send),

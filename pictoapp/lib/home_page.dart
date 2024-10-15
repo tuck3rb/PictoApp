@@ -104,6 +104,7 @@ class _HomePageState extends State<HomePage> {
                   _colorButton(Colors.green),
                   _colorButton(Colors.blue),
                   _colorButton(Colors.purple),
+                  _colorButton(const Color.fromARGB(255, 255, 108, 157)),
                 ],
               ),
             ),
