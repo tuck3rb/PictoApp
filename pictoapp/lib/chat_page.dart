@@ -28,6 +28,13 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
+  void _clearSignature() {
+    final state = _signatureKey.currentState;
+    if (state != null) {
+      state.clear();
+    }
+  }
+
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -143,6 +150,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           AppBar(
+            leading: null,
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.send),
@@ -150,7 +158,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
               IconButton(
                 icon: const Icon(Icons.cancel),
-                onPressed: _signatureKey.currentState?.clear,
+                onPressed: _clearSignature,
               ),
             ]
           ),
@@ -177,6 +185,16 @@ class _ChatPageState extends State<ChatPage> {
         base64Image = base64Encode(bytes!.buffer.asUint8List());
       }
     }
+    // final signatureState = _signatureKey.currentState;
+    // if (signatureState != null) {
+    //   final image = await signatureState.getData();
+    //   if (image != null) {
+    //     final bytes = await image.toByteData(format: ImageByteFormat.png);
+    //     if (bytes != null) {
+    //       base64Image = base64Encode(bytes.buffer.asUint8List());
+    //     }
+    //   }
+    // }
 
     final Map<String, dynamic> messageData = {
       'displayname': widget.user.displayName,
