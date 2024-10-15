@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signature_pad/flutter_signature_pad.dart';
 import 'package:pictoapp/currentuser.dart';
 
@@ -28,13 +29,15 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 900),
-        curve: Curves.easeOut,
-      );
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 900),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
@@ -49,7 +52,7 @@ class _ChatPageState extends State<ChatPage> {
                   .collection('rooms')
                   .doc(widget.title)
                   .collection('messages')
-                  .orderBy('timestamp')
+                  .orderBy('timestamp', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -57,12 +60,11 @@ class _ChatPageState extends State<ChatPage> {
                 }
                 final messages = snapshot.data!.docs;
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _scrollToBottom();
-                });
+                _scrollToBottom();
 
                 return ListView.builder(
                   controller: _scrollController,
+                  reverse: true,
                   shrinkWrap: true,
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
@@ -158,6 +160,13 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<DocumentReference<Object?>> _sendMessage() async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Not signed in. Please return to the home page and try again.')),
+      );
+      return Future.error('Not signed in');
+    }
+    
     String text = _textController.text.trim();
     String? base64Image;
 

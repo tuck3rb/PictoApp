@@ -20,20 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // _counter is only here so that the buttons do anything
-  // Once button navigation takes you to the right pages, 
-  // then _counter will no longer be needed
-  int _counter = 0; 
   Color _textColor = Colors.black;
-
-  // _incrementCounter is only here so that the buttons do anything
-  // Once button navigation takes you to the right pages, 
-  // then _incrementCounter will no longer be needed
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   // Allows for display name to change with user's selection
   // I want to continue this value to the user's profile probably,
@@ -52,6 +39,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _signInAnonymously() async {
+    try {
+      await FirebaseAuth.instance.signInAnonymously();
+    } catch (e) {
+      print("Error signing in anonymously: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,13 +63,13 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Consumer<ApplicationState>(
-            builder: (context, appState, _) => AuthFunc(
-                loggedIn: appState.loggedIn,
-                signOut: () {
-                  FirebaseAuth.instance.signOut();
-                }),
-          ),
+            // Consumer<ApplicationState>(
+            // builder: (context, appState, _) => AuthFunc(
+            //     loggedIn: appState.loggedIn,
+            //     signOut: () {
+            //       FirebaseAuth.instance.signOut();
+            //     }),
+          // ),
             const SizedBox(height: 75),
             const Text(
               'Select a chat room:',
@@ -116,8 +111,15 @@ class _HomePageState extends State<HomePage> {
               width: 250,
               height: 100,
               child: OutlinedButton(
-                onPressed: () {
-                  context.push('/chatpage');
+                onPressed: () async {
+                  if (widget.user.displayName.isNotEmpty) {
+                    await _signInAnonymously();
+                    context.push('/chatpage');
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please enter a display name')),
+                    );
+                  }
                 },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.black,
