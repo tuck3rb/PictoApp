@@ -52,12 +52,10 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB-6m-1fLPkd_4k5vf8vI2-7mjLeu9eq04',
-    appId: '1:685435500986:android:236b4054a943bd6a684583',
-    messagingSenderId: '685435500986',
-    projectId: 'pictoapp-342ec',
-    databaseURL: 'https://pictoapp-342ec-default-rtdb.firebaseio.com',
-    storageBucket: 'pictoapp-342ec.appspot.com',
+    apiKey: 'AIzaSyCOFAyzxuaioJqK-QqJEF6-Rkw_BC7JkGg',
+    appId: '1:1268217098:android:e50d75fa39c9e8610e36f3',
+    messagingSenderId: '1268217098',
+    projectId: 'pictoapp-edcf7',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

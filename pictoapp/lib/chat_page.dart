@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signature_pad/flutter_signature_pad.dart';
 import 'package:pictoapp/currentuser.dart';
 
@@ -27,14 +28,23 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
-  void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 900),
-        curve: Curves.easeOut,
-      );
+  void _clearSignature() {
+    final state = _signatureKey.currentState;
+    if (state != null) {
+      state.clear();
     }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 900),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
@@ -49,7 +59,7 @@ class _ChatPageState extends State<ChatPage> {
                   .collection('rooms')
                   .doc(widget.title)
                   .collection('messages')
-                  .orderBy('timestamp')
+                  .orderBy('timestamp', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -57,12 +67,11 @@ class _ChatPageState extends State<ChatPage> {
                 }
                 final messages = snapshot.data!.docs;
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _scrollToBottom();
-                });
+                _scrollToBottom();
 
                 return ListView.builder(
                   controller: _scrollController,
+                  reverse: true,
                   shrinkWrap: true,
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
@@ -104,6 +113,28 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
+          const Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                width: 50,
+                height: 550,
+                child: DecoratedBox(decoration: BoxDecoration(
+                  color: Colors.grey, 
+                ), 
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                IconButton(onPressed: null, icon: Icon(Icons.edit, color: Colors.black,)),
+                IconButton(onPressed: null, icon: Icon(Icons.crop_16_9, color: Colors.black)),
+                IconButton(onPressed: null, icon: Icon(Icons.stop, color: Colors.black)),
+                IconButton(onPressed: null, icon: Icon(Icons.square, color: Colors.black)),
+                ],
+                )
+                ),
+                ),
+            ),
           SizedBox(
             height: 200,
             child: Stack(
@@ -141,6 +172,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           AppBar(
+            automaticallyImplyLeading: false,
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.send),
@@ -148,7 +180,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
               IconButton(
                 icon: const Icon(Icons.cancel),
-                onPressed: _signatureKey.currentState?.clear,
+                onPressed: _clearSignature,
               ),
             ]
           ),
@@ -158,6 +190,13 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<DocumentReference<Object?>> _sendMessage() async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Not signed in. Please return to the home page and try again.')),
+      );
+      return Future.error('Not signed in');
+    }
+    
     String text = _textController.text.trim();
     String? base64Image;
 
@@ -168,6 +207,16 @@ class _ChatPageState extends State<ChatPage> {
         base64Image = base64Encode(bytes!.buffer.asUint8List());
       }
     }
+    // final signatureState = _signatureKey.currentState;
+    // if (signatureState != null) {
+    //   final image = await signatureState.getData();
+    //   if (image != null) {
+    //     final bytes = await image.toByteData(format: ImageByteFormat.png);
+    //     if (bytes != null) {
+    //       base64Image = base64Encode(bytes.buffer.asUint8List());
+    //     }
+    //   }
+    // }
 
     final Map<String, dynamic> messageData = {
       'displayname': widget.user.displayName,

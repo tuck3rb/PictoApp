@@ -10,88 +10,89 @@ import 'package:provider/provider.dart';
 import 'home_page.dart';
 import 'chat_page.dart';
 
-CurrentUser user = CurrentUser(displayName: "user", color: Colors.black);
+CurrentUser user = CurrentUser(displayName: "", color: Colors.black);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  runApp(ChangeNotifierProvider(
-    create: (context) => ApplicationState(),
-    builder: ((context, child) => App(user: user))
-  ));
+  runApp(App(user: user));
 }
 
 final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HomePage(title: 'Home', user: user),
+      builder: (context, state) => HomePage(title: 'PictoApp', user: user),
       routes: [
-        GoRoute(
-          path: 'sign-in',
-          builder: (context, state) {
-            return SignInScreen(
-              actions: [
-                ForgotPasswordAction(((context, email) {
-                  final uri = Uri(
-                    path: '/sign-in/forgot-password',
-                    queryParameters: <String, String?>{
-                      'email': email,
-                    },
-                  );
-                  context.push(uri.toString());
-                })),
-                AuthStateChangeAction(((context, state) {
-                  final user = switch (state) {
-                    SignedIn state => state.user,
-                    UserCreated state => state.credential.user,
-                    _ => null
-                  };
-                  if (user == null) {
-                    return;
-                  }
-                  if (state is UserCreated) {
-                    user.updateDisplayName(user.email!.split('@')[0]);
-                  }
-                  if (!user.emailVerified) {
-                    user.sendEmailVerification();
-                    const snackBar = SnackBar(
-                        content: Text(
-                            'Please check your email to verify your email address'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                  context.pushReplacement('/');
-                })),
-              ],
-            );
-          },
-          routes: [
-            GoRoute(
-              path: 'forgot-password',
-              builder: (context, state) {
-                final arguments = state.uri.queryParameters;
-                return ForgotPasswordScreen(
-                  email: arguments['email'],
-                  headerMaxExtent: 200,
-                );
-              },
-            ),
-          ],
-        ),
-        GoRoute(
-          path: 'profile',
-          builder: (context, state) {
-            return ProfileScreen(
-              providers: const [],
-              actions: [
-                SignedOutAction((context) {
-                  context.pushReplacement('/');
-                }),
-              ],
-            );
-          },
-        ),
+        // GoRoute(
+        //   path: 'sign-in',
+        //   builder: (context, state) {
+        //     return SignInScreen(
+        //       actions: [
+        //         ForgotPasswordAction(((context, email) {
+        //           final uri = Uri(
+        //             path: '/sign-in/forgot-password',
+        //             queryParameters: <String, String?>{
+        //               'email': email,
+        //             },
+        //           );
+        //           context.push(uri.toString());
+        //         })),
+        //         AuthStateChangeAction(((context, state) {
+        //           final user = switch (state) {
+        //             SignedIn state => state.user,
+        //             UserCreated state => state.credential.user,
+        //             _ => null
+        //           };
+        //           if (user == null) {
+        //             return;
+        //           }
+        //           if (state is UserCreated) {
+        //             user.updateDisplayName(user.email!.split('@')[0]);
+        //           }
+        //           if (!user.emailVerified) {
+        //             user.sendEmailVerification();
+        //             const snackBar = SnackBar(
+        //                 content: Text(
+        //                     'Please check your email to verify your email address'));
+        //             ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        //           }
+        //           context.pushReplacement('/');
+        //         })),
+        //       ],
+        //     );
+        //   },
+        //   routes: [
+        //     GoRoute(
+        //       path: 'forgot-password',
+        //       builder: (context, state) {
+        //         final arguments = state.uri.queryParameters;
+        //         return ForgotPasswordScreen(
+        //           email: arguments['email'],
+        //           headerMaxExtent: 200,
+        //         );
+        //       },
+        //     ),
+        //   ],
+        // ),
+
+        // GoRoute(
+        //   path: 'profile',
+        //   builder: (context, state) {
+        //     return ProfileScreen(
+        //       providers: const [],
+        //       actions: [
+        //         SignedOutAction((context) {
+        //           context.pushReplacement('/');
+        //         }),
+        //       ],
+        //     );
+        //   },
+        // ),
         GoRoute(
           path: 'chatpage',
           builder: (context, state) {
@@ -112,7 +113,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'PictoApp',
-      theme: ThemeData(
+      theme: ThemeData(textTheme: Theme.of(context).textTheme.apply(
+        fontSizeFactor: 1.3,
+        fontSizeDelta: 2.0,
+        fontFamily: 'Pictochat',
+      ), 
         buttonTheme: Theme.of(context).buttonTheme.copyWith(
               highlightColor: Colors.blue,
             ),
