@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signature_pad/flutter_signature_pad.dart';
 import 'package:pictoapp/currentuser.dart';
+import 'package:pictoapp/main.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key, required this.title, required this.user});
@@ -21,6 +23,15 @@ class _ChatPageState extends State<ChatPage> {
   final GlobalKey<SignatureState> _signatureKey = GlobalKey();
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  
+  late Color _penColor = user.color;
+  double _strokeWidth = 3.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _penColor = widget.user.color;
+  }
 
   @override
   void dispose() {
@@ -34,15 +45,16 @@ class _ChatPageState extends State<ChatPage> {
       state.clear();
     }
   }
+  void _changeDrawSize(double width) {
+    setState(() {
+      _strokeWidth = width;
+    });
+  }
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 900),
-          curve: Curves.easeOut,
-        );
+        _scrollController.jumpTo(0);
       }
     });
   }
@@ -113,28 +125,6 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
-          const Align(
-              alignment: Alignment.topLeft,
-              child: SizedBox(
-                width: 50,
-                height: 550,
-                child: DecoratedBox(decoration: BoxDecoration(
-                  color: Colors.grey, 
-                ), 
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                IconButton(onPressed: null, icon: Icon(Icons.edit, color: Colors.black,)),
-                IconButton(onPressed: null, icon: Icon(Icons.crop_16_9, color: Colors.black)),
-                IconButton(onPressed: null, icon: Icon(Icons.stop, color: Colors.black)),
-                IconButton(onPressed: null, icon: Icon(Icons.square, color: Colors.black)),
-                ],
-                )
-                ),
-                ),
-            ),
           SizedBox(
             height: 200,
             child: Stack(
@@ -146,14 +136,14 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   child: Signature(
                     key: _signatureKey,
-                    color: widget.user.color, /// Can be updated to user color from home page.
-                    strokeWidth: 3.0,
+                    color: _penColor, /// Can be updated to user color from home page.
+                    strokeWidth: _strokeWidth,
                   ),
                 ),
                 Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
+                  top: 10,
+                  left: 10,
+                  right: 10,
                   child: Container(
                     color: Colors.transparent,
                     child: TextField(
@@ -171,9 +161,17 @@ class _ChatPageState extends State<ChatPage> {
               ],
             ),
           ),
-          AppBar(
-            automaticallyImplyLeading: false,
-            actions: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.stop, color: Colors.black),
+                onPressed: () => _changeDrawSize(1.0),
+              ),
+              IconButton(
+                icon: const Icon(Icons.square, color: Colors.black),
+                onPressed: () => _changeDrawSize(3.0),
+              ),
               IconButton(
                 icon: const Icon(Icons.send),
                 onPressed: _sendMessage,
@@ -182,7 +180,7 @@ class _ChatPageState extends State<ChatPage> {
                 icon: const Icon(Icons.cancel),
                 onPressed: _clearSignature,
               ),
-            ]
+            ],
           ),
         ],
       ),
