@@ -113,6 +113,29 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
+          const Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                width: 50,
+                height: 550,
+                child: DecoratedBox(decoration: BoxDecoration(
+                  color: Colors.grey, 
+                ), 
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                IconButton(onPressed: null, icon: Icon(Icons.edit, color: Colors.black,)),
+                IconButton(onPressed: null, icon: Icon(Icons.crop_16_9, color: Colors.black)),
+                IconButton(onPressed: null, icon: Icon(Icons.stop, color: Colors.black)),
+                IconButton(onPressed: null, icon: Icon(Icons.square, color: Colors.black)),
+                IconButton(onPressed: null, icon: Icon(Icons.clear, color: Colors.black)),
+                ],
+                )
+                ),
+                ),
+            ),
           SizedBox(
             height: 200,
             child: Stack(
