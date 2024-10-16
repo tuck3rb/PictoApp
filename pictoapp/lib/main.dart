@@ -113,7 +113,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'PictoApp',
-      theme: ThemeData(
+      theme: ThemeData(textTheme: Theme.of(context).textTheme.apply(
+        fontSizeFactor: 1.3,
+        fontSizeDelta: 2.0,
+        fontFamily: 'Pictochat',
+      ), 
         buttonTheme: Theme.of(context).buttonTheme.copyWith(
               highlightColor: Colors.blue,
             ),
