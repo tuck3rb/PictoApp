@@ -130,7 +130,6 @@ class _ChatPageState extends State<ChatPage> {
                 IconButton(onPressed: null, icon: Icon(Icons.crop_16_9, color: Colors.black)),
                 IconButton(onPressed: null, icon: Icon(Icons.stop, color: Colors.black)),
                 IconButton(onPressed: null, icon: Icon(Icons.square, color: Colors.black)),
-                IconButton(onPressed: null, icon: Icon(Icons.clear, color: Colors.black)),
                 ],
                 )
                 ),
