@@ -17,26 +17,17 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -49,7 +40,16 @@ class DefaultFirebaseOptions {
     }
   }
 
-// 1:1268217098:android:e50d75fa39c9e8610e36f3
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyB_Spryhb4lrOalCoqF6KERk6iJQNNLGL0',
+    appId: '1:685435500986:web:8cdcab9e601ef01a684583',
+    messagingSenderId: '685435500986',
+    projectId: 'pictoapp-342ec',
+    authDomain: 'pictoapp-342ec.firebaseapp.com',
+    databaseURL: 'https://pictoapp-342ec-default-rtdb.firebaseio.com',
+    storageBucket: 'pictoapp-342ec.appspot.com',
+    measurementId: 'G-H0VSLF6M08',
+  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCOFAyzxuaioJqK-QqJEF6-Rkw_BC7JkGg',
@@ -59,20 +59,33 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCOFAyzxuaioJqK-QqJEF6-Rkw_BC7JkGg',
-    appId: '1:1268217098:ios:c5764d6f1013977f0e36f3',
-    messagingSenderId: '1268217098',
-    projectId: 'pictoapp-edcf7',
-    storageBucket: 'pictoapp-edcf7.appspot.com',
+    apiKey: 'AIzaSyCevpdtHVFxyqBGpxMfGsRPnMk9bCv4hko',
+    appId: '1:685435500986:ios:150a398ef4389543684583',
+    messagingSenderId: '685435500986',
+    projectId: 'pictoapp-342ec',
+    databaseURL: 'https://pictoapp-342ec-default-rtdb.firebaseio.com',
+    storageBucket: 'pictoapp-342ec.appspot.com',
     iosBundleId: 'com.example.pictoapp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCOFAyzxuaioJqK-QqJEF6-Rkw_BC7JkGg',
-    appId: '1:1268217098:ios:c5764d6f1013977f0e36f3',
-    messagingSenderId: '1268217098',
-    projectId: 'pictoapp-edcf7',
-    storageBucket: 'pictoapp-edcf7.appspot.com',
+    apiKey: 'AIzaSyCevpdtHVFxyqBGpxMfGsRPnMk9bCv4hko',
+    appId: '1:685435500986:ios:150a398ef4389543684583',
+    messagingSenderId: '685435500986',
+    projectId: 'pictoapp-342ec',
+    databaseURL: 'https://pictoapp-342ec-default-rtdb.firebaseio.com',
+    storageBucket: 'pictoapp-342ec.appspot.com',
     iosBundleId: 'com.example.pictoapp',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyB_Spryhb4lrOalCoqF6KERk6iJQNNLGL0',
+    appId: '1:685435500986:web:0c90b6b4a66fec31684583',
+    messagingSenderId: '685435500986',
+    projectId: 'pictoapp-342ec',
+    authDomain: 'pictoapp-342ec.firebaseapp.com',
+    databaseURL: 'https://pictoapp-342ec-default-rtdb.firebaseio.com',
+    storageBucket: 'pictoapp-342ec.appspot.com',
+    measurementId: 'G-3CD8WGHG0L',
   );
 }

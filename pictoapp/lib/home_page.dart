@@ -93,9 +93,14 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: _textColor, fontWeight: FontWeight.bold),
               ),
             ),
+            const Text(
+              'Select a brush color:',
+              style: TextStyle(fontSize: 20),
+            ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [ // Different colors for user to select. Could totally put more!
                   _colorButton(Colors.black),
                   _colorButton(Colors.red),
@@ -131,26 +136,26 @@ class _HomePageState extends State<HomePage> {
                 child: const Text('Public Room', style: TextStyle(fontSize: 24, color: Colors.white),),
               ),
             ),
-            SizedBox(
-              width: 250,
-              height: 100,
-              child: OutlinedButton(
-                onPressed: () {
-                  context.push('/chatpage');
-                },
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  side: const BorderSide(color: Color.fromARGB(255, 0, 46, 83)),
-                  backgroundColor: const Color.fromARGB(255, 0, 122, 222),
-                  shape: const BeveledRectangleBorder(),
-                ),
+            //SizedBox(
+              //width: 250,
+              //height: 100,
+              //child: OutlinedButton(
+                //onPressed: () {
+                  //context.push('/chatpage');
+                //},
+                //style: OutlinedButton.styleFrom(
+                  //foregroundColor: Colors.black,
+                  //side: const BorderSide(color: Color.fromARGB(255, 0, 46, 83)),
+                  //backgroundColor: const Color.fromARGB(255, 0, 122, 222),
+                  //shape: const BeveledRectangleBorder(),
+                //),
                 // I think we'll be able to figure out Private Rooms,
                 // but if not we could have multiple public ones easily.
                 // However if we can make multiple public ones, then private
                 // rooms shouldn't be that much harder!
-                child: const Text('Private Room', style: TextStyle(fontSize: 24, color: Colors.white),),
-              ),
-            ),
+                //child: const Text('Private Room', style: TextStyle(fontSize: 24, color: Colors.white),),
+              //),
+            //),
             const SizedBox(height: 100),
           ],
         ),
@@ -161,7 +166,7 @@ class _HomePageState extends State<HomePage> {
   // Made a special type of elevated button for selecting display name color
   Widget _colorButton(Color color) { 
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(1.0),
       child: ElevatedButton(
         onPressed: () => _changeColor(color),
         style: ElevatedButton.styleFrom(
