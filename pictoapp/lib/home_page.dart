@@ -72,8 +72,8 @@ class _HomePageState extends State<HomePage> {
           // ),
             const SizedBox(height: 75),
             const Text(
-              'Select a chat room:',
-              style: TextStyle(fontSize: 20),
+              'Create a username:',
+              style: TextStyle(fontSize: 25),
             ),
             SizedBox(
               width: 250,
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const Text(
               'Select a brush color:',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 25),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -113,6 +113,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            const SizedBox(height: 0,),
             SizedBox(
               width: 250,
               height: 100,
@@ -133,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: const Color.fromARGB(255, 0, 122, 222),
                   shape: const BeveledRectangleBorder(),
                 ),
-                child: const Text('Public Room', style: TextStyle(fontSize: 24, color: Colors.white),),
+                child: const Text('Join Room', style: TextStyle(fontSize: 30, color: Colors.white),),
               ),
             ),
             //SizedBox(
