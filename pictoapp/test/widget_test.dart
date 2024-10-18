@@ -7,7 +7,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:pictoapp/main.dart';
 import 'package:pictoapp/currentuser.dart';
 
@@ -32,4 +31,14 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
+
+   test("Display name is correctly abbreviated", () {
+      var currentUser = CurrentUser(displayName: "William",color: Colors.blue);
+      expect(currentUser.abbrev(),"William");
+
+      currentUser.displayName = "Dr. Mark Goadrich";
+      expect(currentUser.abbrev(),"Dr. Mark Goadr");
+
+   });
+
 }

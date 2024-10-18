@@ -6,7 +6,12 @@ class CurrentUser {
   String displayName;
   Color color;
 
+  // Modified `abbrev` to not crash when display name is short
   String abbrev() {
-    return displayName.substring(0, 14);
+    if (displayName.length <= 14) {
+      return displayName;
+    } else {
+      return displayName.substring(0, 14);
+    }
   }
 }
