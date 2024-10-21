@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pictoapp/app_state.dart';
-import 'package:pictoapp/authentication.dart';
-import 'package:pictoapp/chat_page.dart';
 import 'package:firebase_auth/firebase_auth.dart' // new
     hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:provider/provider.dart';  
-
 import 'currentuser.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,12 +15,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Color _textColor = Colors.black;
+  Color _textColor = Colors.black; // default user selected color before any selection is made
 
-  // Allows for display name to change with user's selection
-  // I want to continue this value to the user's profile probably,
-  // so that in the chat they have a username color and can maybe 
-  // type and draw in that color (if not others).
+  // Allows for display name color to change with user's selection
+  // This value continues to the user's chats in the public room
   void _changeColor(Color color) { 
     setState(() {
       _textColor = color;
@@ -33,13 +26,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _changeName(String name) {
+  void _changeName(String name) { 
     setState(() {
       widget.user.displayName = name;
     });
   }
 
-  Future<void> _signInAnonymously() async {
+  Future<void> _signInAnonymously() async { // Error handling for signing in without profiles
     try {
       await FirebaseAuth.instance.signInAnonymously();
     } catch (e) {
@@ -63,28 +56,17 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            // Consumer<ApplicationState>(
-            // builder: (context, appState, _) => AuthFunc(
-            //     loggedIn: appState.loggedIn,
-            //     signOut: () {
-            //       FirebaseAuth.instance.signOut();
-            //     }),
-          // ),
             const SizedBox(height: 75),
             const Text(
               'Create a username:',
               style: TextStyle(fontSize: 25),
             ),
-            SizedBox(
+            SizedBox( // Display name box is the only place you have to sign in (no profiles)
               width: 250,
               child: TextField( 
                 onChanged: (text){ 
                   _changeName(text);
                 },
-                // We should either make it to where you can edit your display name
-                // straight from here OR we could make it to where your display name
-                // is written here and you can click a little pencil icon to edit your
-                // profile settings (similar to profile button in the firebase demo).
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Display name',
@@ -97,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               'Select a brush color:',
               style: TextStyle(fontSize: 25),
             ),
-            SingleChildScrollView(
+            SingleChildScrollView( // Selecting brush color/username color
               scrollDirection: Axis.horizontal,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -120,7 +102,7 @@ class _HomePageState extends State<HomePage> {
               child: OutlinedButton(
                 onPressed: () async {
                   if (widget.user.displayName.isNotEmpty) {
-                    await _signInAnonymously();
+                    await _signInAnonymously(); // Ensures you are able to join room via cloud
                     context.push('/chatpage');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -128,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                     );
                   }
                 },
-                style: OutlinedButton.styleFrom(
+                style: OutlinedButton.styleFrom( // Style for 'Join Room' button
                   foregroundColor: Colors.black,
                   side: const BorderSide(color: Color.fromARGB(255, 0, 46, 83)),
                   backgroundColor: const Color.fromARGB(255, 0, 122, 222),
@@ -137,26 +119,6 @@ class _HomePageState extends State<HomePage> {
                 child: const Text('Join Room', style: TextStyle(fontSize: 30, color: Colors.white),),
               ),
             ),
-            //SizedBox(
-              //width: 250,
-              //height: 100,
-              //child: OutlinedButton(
-                //onPressed: () {
-                  //context.push('/chatpage');
-                //},
-                //style: OutlinedButton.styleFrom(
-                  //foregroundColor: Colors.black,
-                  //side: const BorderSide(color: Color.fromARGB(255, 0, 46, 83)),
-                  //backgroundColor: const Color.fromARGB(255, 0, 122, 222),
-                  //shape: const BeveledRectangleBorder(),
-                //),
-                // I think we'll be able to figure out Private Rooms,
-                // but if not we could have multiple public ones easily.
-                // However if we can make multiple public ones, then private
-                // rooms shouldn't be that much harder!
-                //child: const Text('Private Room', style: TextStyle(fontSize: 24, color: Colors.white),),
-              //),
-            //),
             const SizedBox(height: 100),
           ],
         ),

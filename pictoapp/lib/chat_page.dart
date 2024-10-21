@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +26,7 @@ class _ChatPageState extends State<ChatPage> {
   late Color _penColor = user.color;
   double _strokeWidth = 3.0;
 
+ // functions for drawing in the chat box
   @override
   void initState() {
     super.initState();
@@ -162,7 +162,7 @@ class _ChatPageState extends State<ChatPage> {
               ],
             ),
           ),
-          Row(
+          Row( // tools for drawing board
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
@@ -201,21 +201,12 @@ class _ChatPageState extends State<ChatPage> {
 
     if (_signatureKey.currentState != null) {
       final image = await _signatureKey.currentState!.getData();
+      // ignore: unnecessary_null_comparison
       if (image != null) {
         final bytes = await image.toByteData(format: ImageByteFormat.png);
         base64Image = base64Encode(bytes!.buffer.asUint8List());
       }
     }
-    // final signatureState = _signatureKey.currentState;
-    // if (signatureState != null) {
-    //   final image = await signatureState.getData();
-    //   if (image != null) {
-    //     final bytes = await image.toByteData(format: ImageByteFormat.png);
-    //     if (bytes != null) {
-    //       base64Image = base64Encode(bytes.buffer.asUint8List());
-    //     }
-    //   }
-    // }
 
     final Map<String, dynamic> messageData = {
       'displayname': widget.user.displayName,

@@ -49,8 +49,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-// 1:1268217098:android:e50d75fa39c9e8610e36f3
-
+// if you're experiencing any problems loading this on an android 
+// or android emulator its this section here...
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCOFAyzxuaioJqK-QqJEF6-Rkw_BC7JkGg',
     appId: '1:1268217098:android:e50d75fa39c9e8610e36f3',
