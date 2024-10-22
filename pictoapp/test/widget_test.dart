@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pictoapp/main.dart';
 import 'package:pictoapp/currentuser.dart';
+import 'package:pictoapp/home_page.dart';
+import 'package:pictoapp/chat_page.dart';
 
 // We'll at minimum want tests for navigation, messaging, drawing board, & displaying of drawings
 
@@ -38,7 +40,27 @@ void main() {
 
       currentUser.displayName = "Dr. Mark Goadrich";
       expect(currentUser.abbrev(),"Dr. Mark Goadr");
-
    });
+
+   testWidgets("HomePage has a title", (tester) async {
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: HomePage(
+                title: "title",
+                user: CurrentUser(displayName: "Mark",color: Colors.blue)))));
+    final titleFinder = find.text("title");
+   expect(titleFinder,findsOneWidget);
+   });
+
+   testWidgets("HomePage has a user", (tester) async {
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: HomePage(
+                title: "title",
+                user: CurrentUser(displayName: "Mark",color: Colors.blue)))));
+    
+    final userFinder = find.widgetWithText(HomePage,user.displayName);
+    expect(userFinder,findsOneWidget);
+  });
 
 }
